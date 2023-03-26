@@ -6,10 +6,11 @@
 
 body{
     font-family:  sans-serif;
-     /* background-image: url('/FrontEnd/login.jpg')  */
-   background-color: rgb(216, 188, 103);
-    color : #fff;
-    line-height: 2;
+      background-image: url('/FrontEnd/pexels-miguel-á-padriñán-255379.jpg')  ;
+      background-repeat: no-repeat;
+      background-size: cover;
+  
+    line-height: 2; 
 }
 
 a{
@@ -20,6 +21,7 @@ a{
     margin: 30px auto;
     min-width: 500px;
     padding: 23px;
+       
 }
 
 .form-wrap{
@@ -27,7 +29,9 @@ background: #fff;
 padding: 15px 30px;
 color: #070202;
 border-radius: 15px;
-width:50%
+
+margin-left: 25%;
+margin-right: 25%;
 }
 
 .form-wrap .form-content input:focus{
@@ -59,7 +63,9 @@ width:50%
     width: 100%;
     padding: 10px;
     margin-top: 20px;
-    background: #6ea798
+    background: #6ea798;
+    font-size: larger;
+    font-weight: bolder;
 }
 
 .form-wrap button:hover{
