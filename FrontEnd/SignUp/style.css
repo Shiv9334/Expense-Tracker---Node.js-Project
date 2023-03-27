@@ -6,7 +6,7 @@
 
 body{
     font-family:  sans-serif;
-      background-image: url('/FrontEnd/pexels-miguel-á-padriñán-255379.jpg')  ;
+      background-image: url('/FrontEnd/SignUp/pexels-miguel-á-padriñán-255379.jpg')  ;
       background-repeat: no-repeat;
       background-size: cover;
   
@@ -36,7 +36,7 @@ margin-right: 25%;
 
 .form-wrap .form-content input:focus{
     outline: none;
-    border-color: #f7c08a;
+    border-color: #f8072b;
 }
 
 .form-wrap h1{
@@ -88,4 +88,15 @@ footer{
 footer a{
     color: #ff2b2b;  
 }
-
+.error {
+    background: orangered;
+    color: #fff;
+    padding: 5px;
+    margin: 5px;
+}
+.warning{
+    background: red;
+    color: black;
+    padding: 5px;
+    margin: 5px;
+}
