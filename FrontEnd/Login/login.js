@@ -17,6 +17,7 @@ async function onSubmit(e) {
     console.log(response);
     if (response === 200) {
       alert("LogIn Successful!!!");
+      window.location.href = "../ExpenseTracker/index.html";
     } else {
       throw new Error("Failed to login");
     }

@@ -8,10 +8,15 @@ app.use(cors());
 
 const signUpRoute = require("./routes/signup");
 const loginRoute = require("./routes/login");
+const User = require("./models/user");
+const UserExpense = require("./models/expense");
 
 app.use(bodyParser.json({ extended: false }));
 app.use(signUpRoute);
 app.use(loginRoute);
+
+User.hasMany(UserExpense, { constraints: true, onDelete: "CASCADE" });
+UserExpense.belongs(User);
 
 sequelize
   .sync()
