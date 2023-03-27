@@ -22,7 +22,7 @@ async function onSubmit(e) {
     }
   } catch (err) {
     msg.classList.add("warning");
-    alert("Something went Wrong");
+    //alert("Something went Wrong");
     msg.textContent = err.response.data.error;
     setTimeout(() => msg.remove(), 3000);
   }

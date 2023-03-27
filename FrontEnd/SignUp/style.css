@@ -32,7 +32,7 @@ border-radius: 15px;
 
 .form-wrap .form-content input:focus{
     outline: none;
-    border-color: #f8072b;
+    border-color: #0acd07;
 }
 
 .form-wrap h1{
@@ -96,7 +96,9 @@ footer a{
 }
 .warning{
     background: yellow;
-    color: #ddd;
-    padding: 5px;
-    margin: 5px;
+        color: #111010;
+        text-align: center;
+        font-weight: bold;
+        padding: 5px;
+        margin: 5px;
 }
