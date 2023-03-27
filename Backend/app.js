@@ -7,9 +7,11 @@ const sequelize = require("./util/database");
 app.use(cors());
 
 const signUpRoute = require("./routes/signup");
+const loginRoute = require("./routes/login");
 
 app.use(bodyParser.json({ extended: false }));
 app.use(signUpRoute);
+app.use(loginRoute);
 
 sequelize
   .sync()
