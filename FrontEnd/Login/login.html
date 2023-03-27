@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker (Login)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container">
+        <div class="msg"></div>
+        <div class="form-wrap">
+            <h1>Log In</h1>
+            <p>Already have an account?</p>
+            <form class="login-form">
+                <div class="form-content">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-content">
+                    <label for="password">Password: </label>
+                    <input type="password" name="password" id = "password" placeholder="Enter your password" required>
+                    <a href="#" style="font-size: smaller; float: right;">Forgot Password</a>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <p class="bottom-text">
+                    By clicking the Login button, you agree to our
+                    <a href="#">Terms and Conditions</a> and
+                    <a href="#">Privacy Policy</a>
+                </p>
+            </form>
+        </div>
+        <footer>
+            <p>Don't have an account? <a href="../SignUp/index.html">SignUp  Here</a></p>
+        </footer>
+    </div>
+    <script src="login.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+</html>

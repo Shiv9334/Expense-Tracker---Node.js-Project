@@ -19,9 +19,8 @@ a{
 
 #container{
     margin: 30px auto;
-    min-width: 500px;
-    padding: 23px;
-       
+    max-width: 500px;
+    padding: 23px;   
 }
 
 .form-wrap{
@@ -29,9 +28,6 @@ background: #fff;
 padding: 15px 30px;
 color: #070202;
 border-radius: 15px;
-
-margin-left: 25%;
-margin-right: 25%;
 }
 
 .form-wrap .form-content input:focus{
@@ -56,6 +52,8 @@ margin-right: 25%;
 .form-wrap .form-content input{
     width: 100%;
     padding: 10px;
+    border: #ddd 1px solid;
+        border-radius: 5px;
 }
 
 .form-wrap button{
@@ -64,8 +62,11 @@ margin-right: 25%;
     padding: 10px;
     margin-top: 20px;
     background: #6ea798;
+    color: #fff;
     font-size: larger;
     font-weight: bolder;
+    cursor: pointer;
+    border-radius: 10px;
 }
 
 .form-wrap button:hover{
@@ -80,13 +81,12 @@ margin-right: 25%;
 footer{
     text-align: center;
     margin-top: 15px;
-    font-weight: bolder;
-    color: black;
     font-size: larger;
 }
 
 footer a{
-    color: #ff2b2b;  
+    color:#3804f1;
+    font-weight: bolder;
 }
 .error {
     background: orangered;
@@ -95,8 +95,8 @@ footer a{
     margin: 5px;
 }
 .warning{
-    background: red;
-    color: black;
+    background: yellow;
+    color: #ddd;
     padding: 5px;
     margin: 5px;
 }
