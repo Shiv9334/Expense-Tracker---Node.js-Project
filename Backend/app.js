@@ -6,6 +6,7 @@ const sequelize = require("./util/database");
 
 app.use(cors());
 
+const expenseRoute = require("./routes/expense");
 const signUpRoute = require("./routes/signup");
 const loginRoute = require("./routes/login");
 const User = require("./models/user");
@@ -14,6 +15,7 @@ const UserExpense = require("./models/expense");
 app.use(bodyParser.json({ extended: false }));
 app.use(signUpRoute);
 app.use(loginRoute);
+app.use(expenseRoute);
 
 User.hasMany(UserExpense);
 UserExpense.belongsTo(User);

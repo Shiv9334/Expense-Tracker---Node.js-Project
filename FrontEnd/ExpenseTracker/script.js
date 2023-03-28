@@ -40,6 +40,7 @@ async function showTotalExpense() {
     // console.log(response)
     response.data.forEach((user) => {
       sum += user.amount;
+      showOnScreen(user);
     });
     title.innerText = `Total Expenditure: ${sum}`;
   } catch (err) {
@@ -49,13 +50,6 @@ async function showTotalExpense() {
 
 window.addEventListener("DOMContentLoaded", async () => {
   try {
-    const response = await axios.get("http://localhost:4000/user/expense", {
-      headers: { Authorization: token },
-    });
-    // console.log(response)
-    response.data.forEach((user) => {
-      showOnScreen(user);
-    });
     showTotalExpense();
   } catch (err) {
     console.error(err);
@@ -123,7 +117,9 @@ async function editUser(e) {
     if (e.target.classList.contains("edit")) {
       var li = e.target.parentElement;
       id = li.id;
-      const response = await axios.get(`http://localhost:4000/edit/${id}`);
+      const response = await axios.get(`http://localhost:4000/edit/${id}`, {
+        headers: { Authorization: token },
+      });
       console.log(response);
       expense.removeChild(li);
       amount.value = response.data.amount;
@@ -147,10 +143,10 @@ async function updateItem(e) {
     category: category.value,
   };
   try {
-    // const response = await axios.put(`http://localhost:8080/update/${id}` , updatedExpense);
     const response = await axios.put(
-      `http://localhost:4000/edit/${id}`,
-      updatedExpense
+      `http://localhost:4000/user/edit/${id}`,
+      updatedExpense,
+      { headers: { Authorization: token } }
     );
     showOnScreen(response.data);
     myForm.removeEventListener("submit", updateItem);
