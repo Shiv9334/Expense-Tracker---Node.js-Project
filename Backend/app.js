@@ -16,7 +16,7 @@ app.use(signUpRoute);
 app.use(loginRoute);
 
 User.hasMany(UserExpense, { constraints: true, onDelete: "CASCADE" });
-UserExpense.belongs(User);
+UserExpense.belongsTo(User);
 
 sequelize
   .sync()

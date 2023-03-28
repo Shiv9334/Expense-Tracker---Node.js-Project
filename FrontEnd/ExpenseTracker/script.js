@@ -8,7 +8,7 @@ let id;
 
 function showOnScreen(user) {
   const li = document.createElement("li");
-  li.className = "col-sm";
+  li.className = "list-group-item";
   li.setAttribute("id", user.id);
   const textNode = `₹ ${user.amount}-  ${user.description}-  ${user.category}`;
   li.appendChild(document.createTextNode(textNode));
@@ -34,7 +34,7 @@ async function showTotalExpense() {
   let sum = 0;
   const title = document.getElementById("expense-title");
   try {
-    const response = await axios.get("http://localhost:8080/");
+    const response = await axios.get("http://localhost:4000/user/expense");
     // console.log(response)
     response.data.forEach((user) => {
       sum += user.amount;
@@ -47,7 +47,7 @@ async function showTotalExpense() {
 
 window.addEventListener("DOMContentLoaded", async () => {
   try {
-    const response = await axios.get("http://localhost:4000/");
+    const response = await axios.get("http://localhost:4000/user/expense");
     // console.log(response)
     response.data.forEach((user) => {
       showOnScreen(user);
@@ -77,7 +77,7 @@ async function onSubmit(e) {
     };
     try {
       const response = await axios.post(
-        "http://localhost:4000/user",
+        "http://localhost:4000/user/expense",
         userExpense
       );
       showOnScreen(response.data);
@@ -99,7 +99,7 @@ async function removeItem(e) {
       if (confirm("Are You Sure?")) {
         var li = e.target.parentElement;
         id = li.id;
-        await axios.delete(`http://localhost:4000/delete/${id}`);
+        await axios.delete(`http://localhost:4000/user/delete/${id}`);
         expense.removeChild(li);
         showTotalExpense();
       }
