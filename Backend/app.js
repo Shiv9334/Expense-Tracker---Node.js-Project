@@ -15,7 +15,7 @@ app.use(bodyParser.json({ extended: false }));
 app.use(signUpRoute);
 app.use(loginRoute);
 
-User.hasMany(UserExpense, { constraints: true, onDelete: "CASCADE" });
+User.hasMany(UserExpense);
 UserExpense.belongsTo(User);
 
 sequelize

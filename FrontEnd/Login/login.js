@@ -14,8 +14,9 @@ async function onSubmit(e) {
       password: Password.value,
     };
     const response = await axios.post(url, user);
-    console.log(response);
+    console.log(response.data);
     if (response === 200) {
+      localStorage.setItem("token", response.data.token);
       alert("LogIn Successful!!!");
       window.location.href = "../ExpenseTracker/index.html";
     } else {
@@ -23,7 +24,7 @@ async function onSubmit(e) {
     }
   } catch (err) {
     msg.classList.add("warning");
-    //alert("Something went Wrong");
+    alert("Something went Wrong");
     msg.textContent = err.response.data.error;
     setTimeout(() => msg.remove(), 3000);
   }

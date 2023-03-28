@@ -4,7 +4,7 @@ const description = document.getElementById("description");
 const category = document.getElementById("category");
 const expense = document.getElementById("collection");
 const msg = document.querySelector(".msg");
-let id;
+const token = localStorage.getItem("token");
 
 function showOnScreen(user) {
   const li = document.createElement("li");
@@ -34,7 +34,9 @@ async function showTotalExpense() {
   let sum = 0;
   const title = document.getElementById("expense-title");
   try {
-    const response = await axios.get("http://localhost:4000/user/expense");
+    const response = await axios.get("http://localhost:4000/user/expense", {
+      headers: { Authorization: token },
+    });
     // console.log(response)
     response.data.forEach((user) => {
       sum += user.amount;
@@ -47,7 +49,9 @@ async function showTotalExpense() {
 
 window.addEventListener("DOMContentLoaded", async () => {
   try {
-    const response = await axios.get("http://localhost:4000/user/expense");
+    const response = await axios.get("http://localhost:4000/user/expense", {
+      headers: { Authorization: token },
+    });
     // console.log(response)
     response.data.forEach((user) => {
       showOnScreen(user);
@@ -78,7 +82,8 @@ async function onSubmit(e) {
     try {
       const response = await axios.post(
         "http://localhost:4000/user/expense",
-        userExpense
+        userExpense,
+        { headers: { Authorization: token } }
       );
       showOnScreen(response.data);
       showTotalExpense();
@@ -99,7 +104,9 @@ async function removeItem(e) {
       if (confirm("Are You Sure?")) {
         var li = e.target.parentElement;
         id = li.id;
-        await axios.delete(`http://localhost:4000/user/delete/${id}`);
+        await axios.delete(`http://localhost:4000/user/delete/${id}`, {
+          headers: { Authorization: token },
+        });
         expense.removeChild(li);
         showTotalExpense();
       }

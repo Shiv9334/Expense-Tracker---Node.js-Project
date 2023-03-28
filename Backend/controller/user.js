@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.postSignUpUser = async (req, res, next) => {
   const name = req.body.name;
@@ -28,7 +29,9 @@ exports.postSignUpUser = async (req, res, next) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
+function geenerateToken(id) {
+  return jwt.sign({ userId: id }, "9755445544vcvfv8644");
+}
 exports.postLoginUser = async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -40,7 +43,7 @@ exports.postLoginUser = async (req, res, next) => {
     if (!passwordMatch) {
       return res.status(401).json({ error: "Incorrect password" });
     }
-    return res.status(200).json(user);
+    return res.status(200).json({ token: geenerateToken(user.id) });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
