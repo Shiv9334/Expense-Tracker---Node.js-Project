@@ -1,8 +1,8 @@
 const myForm = document.querySelector(".login-form");
 const msg = document.querySelector(".msg");
-const Email = document.querySelector("#email");
-const Password = document.querySelector("#password");
-let url = "http://localhost:4000/user/login";
+const emailInput = document.querySelector("#email");
+const passwordInput = document.querySelector("#password");
+let userId;
 
 myForm.addEventListener("submit", onSubmit);
 
@@ -10,21 +10,21 @@ async function onSubmit(e) {
   e.preventDefault();
   try {
     const user = {
-      email: Email.value,
-      password: Password.value,
+      email: emailInput.value,
+      password: passwordInput.value,
     };
-    const response = await axios.post(url, user);
+    const response = await axios.post("http://localhost:4000/user/login", user);
     console.log(response.data);
-    if (response === 200) {
+    if (response.status === 200) {
       localStorage.setItem("token", response.data.token);
-      alert("LogIn Successful!!!");
+      alert("Login Success!!!");
       window.location.href = "../ExpenseTracker/index.html";
     } else {
       throw new Error("Failed to login");
     }
   } catch (err) {
+    // console.log(err)
     msg.classList.add("warning");
-    alert("Something went Wrong");
     msg.textContent = err.response.data.error;
     setTimeout(() => msg.remove(), 3000);
   }
