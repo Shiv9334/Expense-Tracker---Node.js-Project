@@ -11,13 +11,18 @@ const signUpRoute = require("./routes/signup");
 const loginRoute = require("./routes/login");
 const User = require("./models/user");
 const UserExpense = require("./models/expense");
+const purchaseRoute = require("./routes/purchase");
 
 app.use(bodyParser.json({ extended: false }));
 app.use(signUpRoute);
 app.use(loginRoute);
 app.use(expenseRoute);
+app.use(purchaseRoute);
 
 User.hasMany(UserExpense);
+UserExpense.belongsTo(User);
+
+User.hasMany(Order);
 UserExpense.belongsTo(User);
 
 sequelize
