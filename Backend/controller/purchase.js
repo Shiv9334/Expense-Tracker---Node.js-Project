@@ -38,14 +38,12 @@ exports.transactionUpdate = async (req, res, next) => {
       })
       .catch((err) => {
         console.log(err);
-        throw new Error(err);
+        order.update({ status: "Failed" });
+        return res
+          .status(403)
+          .json({ message: "Transaction Failed", error: err });
       });
   } catch (err) {
     console.log(err);
-    const { payment_id, order_id } = req.body;
-    console.log(order_id);
-    const order = await Order.findOne({ where: { orderId: order_id } });
-    await order.update({ status: "Failed" });
-    return res.status(403).json({ message: "Transaction Failed", error: err });
   }
 };

@@ -49,3 +49,11 @@ exports.postLoginUser = async (req, res, next) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+exports.getUserStatus = (req, res, next) => {
+  const userId = req.user.id;
+  User.findAll({ where: { id: userId } })
+    .then((user) => {
+      return res.json(user[0].isPremiumUser);
+    })
+    .catch((err) => console.log(err));
+};

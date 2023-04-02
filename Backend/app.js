@@ -6,12 +6,13 @@ const sequelize = require("./util/database");
 
 app.use(cors());
 
-const expenseRoute = require("./routes/expense");
 const signUpRoute = require("./routes/signup");
 const loginRoute = require("./routes/login");
+const expenseRoute = require("./routes/expense");
+const purchaseRoute = require("./routes/purchase");
 const User = require("./models/user");
 const UserExpense = require("./models/expense");
-const purchaseRoute = require("./routes/purchase");
+const Order = require("./models/order");
 
 app.use(bodyParser.json({ extended: false }));
 app.use(signUpRoute);
@@ -26,6 +27,7 @@ User.hasMany(Order);
 UserExpense.belongsTo(User);
 
 sequelize
+  // .sync({ force: true })
   .sync()
   .then((result) => {
     console.log(result);

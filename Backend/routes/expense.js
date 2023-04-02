@@ -1,4 +1,4 @@
-const express = require("exprsss");
+const express = require("express");
 const router = express.Router();
 
 const expenseController = require("../controller/expense");

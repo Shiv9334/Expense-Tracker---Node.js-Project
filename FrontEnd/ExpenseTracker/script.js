@@ -31,6 +31,19 @@ function showOnScreen(user) {
   expense.appendChild(li);
 }
 
+async function isPremium() {
+  try {
+    const user = await axios.get("http://localhost:4000/user/status", {
+      headers: { Authorization: token },
+    });
+    if (user.data === true) {
+      razorpayBtn.style.display = "none";
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 async function showTotalExpense() {
   let sum = 0;
   const title = document.getElementById("expense-title");
@@ -194,7 +207,7 @@ async function payment(e) {
   } catch (err) {
     console.log(err);
   }
-  const rzp1 = new razorpayBtn(options);
+  const rzp1 = new Razorpay(options);
   rzp1.open();
   e.preventDefault();
 
