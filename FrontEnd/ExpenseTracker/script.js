@@ -259,6 +259,7 @@ async function payment(e) {
 
   rzp1.on("payment.failed", async function (response) {
     console.log(response);
+    alert("Transaction failed");
     await axios.post(
       "http://localhost:4000/purchase/transactionfailstatus",
       response.error.metadata,
