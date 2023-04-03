@@ -2,6 +2,7 @@ const myForm = document.querySelector(".login-form");
 const msg = document.querySelector(".msg");
 const emailInput = document.querySelector("#email");
 const passwordInput = document.querySelector("#password");
+const forgotPassword = document.getElementById("forgot-password");
 let userId;
 
 myForm.addEventListener("submit", onSubmit);
@@ -23,9 +24,15 @@ async function onSubmit(e) {
       throw new Error("Failed to login");
     }
   } catch (err) {
-    // console.log(err)
+    console.log(err);
     msg.classList.add("warning");
     msg.textContent = err.response.data.error;
     setTimeout(() => msg.remove(), 3000);
   }
+}
+
+forgotPassword.addEventListener("click", reset);
+
+function reset(e) {
+  window.location.href = "../PasswordReset/forgetPassword.html";
 }
