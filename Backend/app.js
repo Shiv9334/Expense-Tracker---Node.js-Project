@@ -10,6 +10,7 @@ const signUpRoute = require("./routes/signup");
 const loginRoute = require("./routes/login");
 const expenseRoute = require("./routes/expense");
 const purchaseRoute = require("./routes/purchase");
+const premiumRoutes = require("./routes/premium");
 const User = require("./models/user");
 const UserExpense = require("./models/expense");
 const Order = require("./models/order");
@@ -19,16 +20,17 @@ app.use(signUpRoute);
 app.use(loginRoute);
 app.use(expenseRoute);
 app.use(purchaseRoute);
+app.use(premiumRoutes);
 
 User.hasMany(UserExpense);
 UserExpense.belongsTo(User);
 
 User.hasMany(Order);
-UserExpense.belongsTo(User);
+Order.belongsTo(User);
 
 sequelize
-  // .sync({ force: true })
-  .sync()
+  .sync({ force: true })
+  // .sync()
   .then((result) => {
     console.log(result);
     app.listen(4000);

@@ -6,6 +6,11 @@ const expense = document.getElementById("collection");
 const msg = document.querySelector(".msg");
 const token = localStorage.getItem("token");
 const razorpayBtn = document.getElementById("razorpay");
+const razorpayPr = document.getElementById("razorpay-pr");
+const boardbtn = document.getElementById("board-btn");
+const leaderBoard = document.getElementById("collection-board");
+const leaderBoard1 = document.getElementById("leaderboard");
+const boardSection = document.getElementById("leadership-br");
 
 function showOnScreen(user) {
   const li = document.createElement("li");
@@ -36,12 +41,46 @@ async function isPremium() {
     const user = await axios.get("http://localhost:4000/user/status", {
       headers: { Authorization: token },
     });
+    // console.log(user)
     if (user.data === true) {
       razorpayBtn.style.display = "none";
+      razorpayPr.style.display = "flex";
+      boardbtn.style.display = "inline";
+      boardSection.style.display = "block";
+      // boardSection.style.display = "flex";
     }
   } catch (err) {
     console.log(err);
   }
+}
+
+boardbtn.addEventListener("click", showLeaderBoard);
+
+async function showLeaderBoard(e) {
+  e.preventDefault();
+  try {
+    leaderBoard1.style.display = "block";
+    const users = await axios.get(
+      "http://localhost:4000/premium/leadershipboard",
+      { headers: { Authorization: token } }
+    );
+    // console.log(users);
+    users.data.forEach((user) => {
+      // console.log(user)
+      showBoard(user);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function showBoard(user) {
+  const li = document.createElement("li");
+  li.className = "list-group-item";
+  // li.setAttribute('id', user.id);
+  const textNode = `Name: ${user.name}-  Total Expense:${user.totalExpense}`;
+  li.appendChild(document.createTextNode(textNode));
+  leaderBoard.appendChild(li);
 }
 
 async function showTotalExpense() {
@@ -54,7 +93,6 @@ async function showTotalExpense() {
     // console.log(response)
     response.data.forEach((user) => {
       sum += user.amount;
-      // showOnScreen(user);
     });
     title.innerText = `Total Expenditure: ${sum}`;
   } catch (err) {
@@ -67,7 +105,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     const response = await axios.get("http://localhost:4000/user/expense", {
       headers: { Authorization: token },
     });
+    // console.log(response)
+    response.data.forEach((user) => {
+      showOnScreen(user);
+    });
     showTotalExpense();
+    isPremium();
   } catch (err) {
     console.error(err);
   }
@@ -94,10 +137,13 @@ async function onSubmit(e) {
       const response = await axios.post(
         "http://localhost:4000/user/expense",
         userExpense,
-        { headers: { Authorization: token } }
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
       showOnScreen(response.data);
-      // showTotalExpense();
       //clear fields
       amount.value = "";
       description.value = "";
@@ -134,9 +180,10 @@ async function editUser(e) {
     if (e.target.classList.contains("edit")) {
       var li = e.target.parentElement;
       id = li.id;
-      const response = await axios.get(`http://localhost:4000/edit/${id}`, {
-        headers: { Authorization: token },
-      });
+      const response = await axios.get(
+        `http://localhost:4000/user/edit/${id}`,
+        { headers: { Authorization: token } }
+      );
       console.log(response);
       expense.removeChild(li);
       amount.value = response.data.amount;
@@ -182,24 +229,23 @@ async function payment(e) {
     if (e.target.classList.contains("membership")) {
       const response = await axios.get(
         "http://localhost:4000/purchase/premium",
-        {
-          headers: { Authorization: token },
-        }
+        { headers: { Authorization: token } }
       );
+      // console.log(response.data.order.id)
       var options = {
         key: response.data.key_id,
-        order_id: response.data.order_id,
+        order_id: response.data.order.id,
         handler: async function (response) {
           await axios.post(
             "http://localhost:4000/purchase/updatetransactionstatus",
             {
               order_id: options.order_id,
-              paymemt_id: response.razorpay_payment_id,
+              payment_id: response.razorpay_payment_id,
             },
             { headers: { Authorization: token } }
           );
 
-          alert("you are premium user");
+          alert("You are a premium User");
           razorpayBtn.style.display = "none";
         },
       };
@@ -211,8 +257,13 @@ async function payment(e) {
   rzp1.open();
   e.preventDefault();
 
-  rzp1.on("payment failed", function (response) {
+  rzp1.on("payment.failed", function (response) {
     console.log(response);
+    axios.post(
+      "http://localhost:4000/purchase/transactionfailstatus",
+      response.error.metadata,
+      { headers: { Authorization: token } }
+    );
     alert("Transaction Failed");
   });
 }
