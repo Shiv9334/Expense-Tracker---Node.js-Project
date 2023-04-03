@@ -17,6 +17,6 @@ router.post(
 router.post(
   "/purchase/transactionfailstatus",
   userAuthenticate.authenticate,
-  purchaseController.transactionUpdate
+  purchaseController.failTransactionUpdate
 );
 module.exports = router;

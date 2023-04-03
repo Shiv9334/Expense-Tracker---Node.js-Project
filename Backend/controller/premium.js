@@ -1,23 +1,26 @@
 const User = require("../models/user");
 const Expense = require("../models/expense");
+const sequelize = require("../util/database");
+const express = require("express");
 
 async function getAllUsersWithExpenses(req, res) {
   try {
-    const users = await User.findAll();
-    const usersWithExpenses = await Promise.all(
-      users.map(async (user) => {
-        const expenses = await Expense.findAll({ where: { userId: user.id } });
-        const totalExpense = expenses.reduce(
-          (sum, expense) => sum + expense.amount,
-          0
-        );
-        return { name: user.name, totalExpense };
-      })
-    );
-    const sortedUsersWithExpenses = usersWithExpenses.sort(
-      (a, b) => b.totalExpense - a.totalExpense
-    );
-    res.status(200).json(sortedUsersWithExpenses);
+    const userWithExpenses = await User.findAll({
+      attributes: [
+        "id",
+        "name",
+        [sequelize.fn("sum", sequelize.col("amount")), "totalExpense"],
+      ],
+      include: [
+        {
+          model: Expense,
+          attributes: [],
+        },
+      ],
+      group: ["User.id"],
+      order: [["totalExpense", "DESC"]],
+    });
+    res.status(200).json(userWithExpenses);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });

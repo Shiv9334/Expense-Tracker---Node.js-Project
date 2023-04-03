@@ -44,12 +44,12 @@ exports.transactionUpdate = async (req, res, next) => {
   }
 };
 
-exports.transactionUpdate = async (req, res, next) => {
+exports.failTransactionUpdate = async (req, res, next) => {
   try {
     console.log(req.body.order_id);
-    const orderid = req.body.order_id;
-    const order = await Order.findOne({ where: { orderid: orderid } });
-    order.update({ status: "FAILED" });
+    const { payment_id, order_id } = req.body;
+    const order = await Order.findOne({ where: { orderId: order_id } });
+    order.update({ paymentId: payment_id, status: "FAILED" });
     return res.status(403).json({ message: "Transaction Failed" });
   } catch (err) {
     console.log(err);

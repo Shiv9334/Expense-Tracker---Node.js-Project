@@ -257,9 +257,9 @@ async function payment(e) {
   rzp1.open();
   e.preventDefault();
 
-  rzp1.on("payment.failed", function (response) {
+  rzp1.on("payment.failed", async function (response) {
     console.log(response);
-    axios.post(
+    await axios.post(
       "http://localhost:4000/purchase/transactionfailstatus",
       response.error.metadata,
       { headers: { Authorization: token } }
