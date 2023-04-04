@@ -25,6 +25,7 @@ app.use(expenseRoute);
 app.use(purchaseRoute);
 app.use(premiumRoutes);
 app.use(forgetPasswordRoute);
+app.use(passwordResetRoute);
 
 User.hasMany(UserExpense);
 UserExpense.belongsTo(User);

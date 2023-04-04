@@ -4,8 +4,8 @@ const Order = require("../models/order");
 exports.purchaseMembership = async (req, res, next) => {
   try {
     var rzp = new Razorpay({
-      key_id: "rzp_test_j1vwrEX169mrj5",
-      key_secret: "I5ijT1ke8cig1WP6wdi6EEy4",
+      key_id: "rzp_test_SdXPWKN8zd2BL7",
+      key_secret: "bWrsAvjE0CoRY6uSgGIfxjP2",
     });
     const amount = 50000;
 
@@ -55,64 +55,3 @@ exports.failTransactionUpdate = async (req, res, next) => {
     console.log(err);
   }
 };
-/*
- key_id: "rzp_test_j1vwrEX169mrj5",
-      key_secret: "I5ijT1ke8cig1WP6wdi6EEy4",
-
-
-const Razorpay = require("razorpay");
-const Order = require("../models/order.js");
-
-exports.purchaseMembership = async (req, res) => {
-  try {
-    var rzp = new Razorpay({
-     key_id: "rzp_test_M68koKsdybYs1S",
-      key_secret: "HRBVaEQZnqT99ZD2qwlaacrn",
-    });
-    const amount = 2500;
-
-    rzp.orders.create({ amount, currency: "INR" }, (err, order) => {
-      if (err) {
-        throw new Error(JSON.stringify(err));
-      }
-      req.user
-        .createOrder({ orderId: order.id, status: "PENDING" })
-        .then(() => {
-          return res.status(201).json({ order, key_id: rzp.key_id });
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(403).json({ message: "Sometghing went wrong", error: err });
-  }
-};
-
-exports.transactionUpdate = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const { payment_id, order_id } = req.body;
-    const order = await Order.findOne({ where: { orderId: order_id } }); //2
-    const promise1 = order.update({
-      paymentid: payment_id,
-      status: "SUCCESSFUL",
-    });
-    const promise2 = req.user.update({ isPremiumUser: true });
-
-    Promise.all([promise1, promise2])
-      .then(() => {
-        return res
-          .status(202)
-          .json({ sucess: true, message: "Transaction Successful" });
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  } catch (err) {
-    console.log(err);
-    res.status(403).json({ error: err, message: "Sometghing went wrong" });
-  }
-};
-*/

@@ -9,7 +9,7 @@ const apiKey = client.authentications["api-key"];
 apiKey.apiKey = process.env.API_KEY;
 const sender = {
   email: "shivkumar9334@gmail.com",
-  name: "Shiv Kumar",
+  name: "Expense Tracker App",
 };
 
 exports.postForgetPassword = async (req, res, next) => {

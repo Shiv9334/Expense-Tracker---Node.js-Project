@@ -23,6 +23,7 @@ async function onSubmit(e) {
     if (response.status === 200) {
       console.log(response);
       alert("Password Reset link sent. Please check your E-mail.");
+      window.location.href = "../Login/login.html";
     } else {
       msg.classList.add("warning");
       msg.textContent = err.response.data.error;
