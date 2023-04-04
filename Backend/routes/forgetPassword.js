@@ -7,5 +7,9 @@ router.post(
   "/password/forgotpassword",
   forgerPasswordController.postForgetPassword
 );
+router.get(
+  "/password/updatepassword/:id",
+  forgerPasswordController.getUpdatePassword
+);
 
 module.exports = router;
