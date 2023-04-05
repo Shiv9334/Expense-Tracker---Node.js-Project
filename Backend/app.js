@@ -41,7 +41,7 @@ User.hasMany(DownloadLink);
 DownloadLink.belongsTo(User);
 
 sequelize
-  // .sync({ force: true })
+  //.sync({ force: true })
   .sync()
   .then((result) => {
     console.log(result);
