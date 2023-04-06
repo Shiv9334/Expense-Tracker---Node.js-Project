@@ -142,6 +142,6 @@ nodemon.json
 # SvelteKit build / generate output
 .svelte-kit
 
-# End of https://www.toptal.com/developers/gitignore/api/node
+# End of https://www.toptal.com/developers/gitignore/api/n
 
-.nodemon.json
+Backend/nodemon.json
