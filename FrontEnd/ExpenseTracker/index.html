@@ -69,9 +69,9 @@
                             <label for="category" class="form-label">Category</label>
                             <select id="category" name="category" class="form-select">
                                 <option value="Sports">Sports</option>
-                                <option value="Travel" selected>Travelling</option>
+                                <option value="Travel" >Travelling</option>
                                 <option value="Rent">Rent</option>
-                                <option value="Shopping">Shopping</option>
+                                <option value="Shopping" selected>Shopping</option>
                                 <option value="Food" >Food</option>
                                 <option value="Loan">Loan</option>
                                 <option value="Movie">Movie</option>
@@ -86,14 +86,32 @@
             </div>
         </div>
         <section>
-            <div class="row">
-                <div class="col-12">
-                    <h3 id="expense-title" class="mt-3">Total Expenditure:</h3>
+            <div class="row align-items-center">
+                <div class="col-sm-12 col-md-9">
+                    <h3 id="expense-title" class="mt-3" style="text-align: center; padding-left: 200px; margin-bottom: 16px;">Total
+                        Expenditure:</h3>
+                </div>
+                <div class="col-sm-12 col-md-3">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <label for="rowsperpage" class="form-label">Rows per Page:</label>
+                        </div>
+                        <div class="col-auto">
+                            <select id="rowsperpage" name="rowsperpage" class="form-select form-select-sm">
+                                <option value="5" >5</option>
+                                <option value="10" >10</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                                <option value="75">75</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box">
                 <ol id="collection" class="list-group">
-
                 </ol>
             </div>
         </section>
