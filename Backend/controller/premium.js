@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const UserExpense = require("../models/expense");
-const sequelize = require("../util/database");
+//const sequelize = require("../util/database");
 const S3Services = require("../services/s3services");
 const AWS = require("aws-sdk");
 const FileDb = require("../models/download");

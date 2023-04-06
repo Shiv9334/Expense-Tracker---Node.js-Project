@@ -36,25 +36,25 @@ function createTableRow(expense) {
   const dateOfMonth = expenseDate.getDate();
   const year = expenseDate.getFullYear();
   const dayAndDate = `${dayOfWeek}, ${dateOfMonth}, ${year}`;
-  const incomeValue = expense.income ? expense.income : 0;
+  // const incomeValue = expense.income ? expense.income : 0;
 
   const row = document.createElement("tr");
   const dateCell = document.createElement("td");
   const descriptionCell = document.createElement("td");
   const categoryCell = document.createElement("td");
-  const incomeCell = document.createElement("td");
+  // const incomeCell = document.createElement("td");
   const amountCell = document.createElement("td");
 
   dateCell.textContent = dayAndDate;
   descriptionCell.textContent = expense.description;
   categoryCell.textContent = expense.category;
-  incomeCell.textContent = incomeValue;
+  // incomeCell.textContent = incomeValue;
   amountCell.textContent = expense.amount;
 
   row.appendChild(dateCell);
   row.appendChild(descriptionCell);
   row.appendChild(categoryCell);
-  row.appendChild(incomeCell);
+  //  row.appendChild(incomeCell);
   row.appendChild(amountCell);
 
   return row;

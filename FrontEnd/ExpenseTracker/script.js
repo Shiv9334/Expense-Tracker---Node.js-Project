@@ -13,12 +13,11 @@ const leaderBoard1 = document.getElementById("leaderboard");
 const boardSection = document.getElementById("leadership-br");
 const reportBtn = document.getElementById("report");
 const pagination = document.getElementById("pagination");
-const rowsperpage = document.getElementById("rowsperpage");
 const pageInfo = document.getElementById("page-info");
-
 reportBtn.addEventListener("click", report);
-
+const rowsperpage = document.getElementById("rowsperpage");
 let selectedOption;
+
 rowsperpage.addEventListener("change", (e) => {
   selectedOption = e.target.options[e.target.selectedIndex];
   selectedOption.setAttribute("selected", "true");
@@ -27,7 +26,6 @@ rowsperpage.addEventListener("change", (e) => {
   window.location.reload();
 });
 const itemsPerPage = localStorage.getItem("rowsPerPage");
-
 const page = 1;
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -36,19 +34,20 @@ window.addEventListener("DOMContentLoaded", async () => {
       `http://localhost:4000/user/expense/page/?page=${page}`,
       {
         headers: {
-          Authorizaton: token,
+          Authorization: token,
+          itemsPerPage: itemsPerPage,
         },
       }
     );
-    console.log(response);
-    response.data.expense.forEach((user) => {
+    //   console.log(response);
+    response.data.expenses.forEach((user) => {
       showOnScreen(user);
     });
     showPagination(response);
     selectedOption = localStorage.getItem("selectedOption");
     rowsperpage.value = selectedOption;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
   showTotalExpense();
   isPremium();
@@ -67,18 +66,20 @@ function showPagination(response) {
 
   if (hasPreviousPage) {
     const btn2 = document.createElement("button");
+    // btn2.add.className = 'page-link'
     btn2.innerHTML = previousPage;
     btn2.addEventListener("click", () => getPage(previousPage));
     pagination.appendChild(btn2);
   }
-
   const btn1 = document.createElement("button");
+  // btn1.add.className = 'page-link'
   btn1.innerHTML = `<h5>${currentPage}</h5>`;
   btn1.addEventListener("click", () => getPage(currentPage));
   pagination.appendChild(btn1);
 
   if (hasNextPage) {
     const btn3 = document.createElement("button");
+    // btn3.add.className = 'page-link'
     btn3.innerHTML = nextPage;
     btn3.addEventListener("click", () => getPage(nextPage));
     pagination.appendChild(btn3);
@@ -98,13 +99,13 @@ async function getPage(page) {
       }
     );
     removeFromScreen();
-    //  console.log(response);
-    response.data.expense.forEach((user) => {
+    //   console.log(response);
+    response.data.expenses.forEach((user) => {
       showOnScreen(user);
     });
     showPagination(response);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
   showTotalExpense();
   isPremium();
@@ -138,14 +139,14 @@ function showOnScreen(user) {
   editBtn.appendChild(document.createTextNode("EDIT"));
   li.appendChild(editBtn);
   expense.appendChild(li);
-  displayedExpenses(li);
-}
 
+  displayedExpenses.push(li);
+}
 function removeFromScreen() {
   displayedExpenses.forEach((li) => {
     expense.removeChild(li);
   });
-  // clearing the array of displayedExpense array
+  // clear the displayedExpenses array
   displayedExpenses.length = 0;
 }
 
@@ -160,7 +161,6 @@ async function isPremium() {
       razorpayPr.style.display = "flex";
       boardbtn.style.display = "inline";
       boardSection.style.display = "block";
-      // boardSection.style.display = "flex";
       reportBtn.style.display = "inline";
     }
   } catch (err) {
@@ -178,7 +178,7 @@ async function showLeaderBoard(e) {
       "http://localhost:4000/premium/leadershipboard",
       { headers: { Authorization: token } }
     );
-    console.log(users);
+    // console.log(users);
     users.data.forEach((user) => {
       // console.log(user)
       showBoard(user);
@@ -359,12 +359,11 @@ async function payment(e) {
 
   rzp1.on("payment.failed", async function (response) {
     console.log(response);
-    alert("Transaction failed");
+    alert("Transaction Failed");
     await axios.post(
       "http://localhost:4000/purchase/transactionfailstatus",
       response.error.metadata,
       { headers: { Authorization: token } }
     );
-    alert("Transaction Failed");
   });
 }
