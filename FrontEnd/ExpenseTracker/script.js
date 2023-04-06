@@ -13,9 +13,11 @@ const leaderBoard1 = document.getElementById("leaderboard");
 const boardSection = document.getElementById("leadership-br");
 const reportBtn = document.getElementById("report");
 const pagination = document.getElementById("pagination");
+const pageInfo = document.getElementById("page-info");
 reportBtn.addEventListener("click", report);
 
 const page = 1;
+
 window.addEventListener("DOMContentLoaded", async () => {
   try {
     const response = await axios.get(
@@ -57,7 +59,7 @@ function showPagination(response) {
   }
 
   const btn1 = document.createElement("button");
-  btn1.innerHTML = `<h3>${currentPage}</h3>`;
+  btn1.innerHTML = `<h5>${currentPage}</h5>`;
   btn1.addEventListener("click", () => getPage(currentPage));
   pagination.appendChild(btn1);
 
@@ -67,6 +69,7 @@ function showPagination(response) {
     btn3.addEventListener("click", () => getPage(nextPage));
     pagination.appendChild(btn3);
   }
+  pageInfo.textContent = `Page${currentPage} of ${lastPage}`;
 }
 
 async function getPage(page) {
@@ -79,7 +82,7 @@ async function getPage(page) {
         },
       }
     );
-    console.log(response);
+    //  console.log(response);
     response.data.expense.forEach((user) => {
       showOnScreen(user);
     });

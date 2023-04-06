@@ -1,119 +1,157 @@
-const myForm = document.getElementById("my-form");
-const amount = document.getElementById("expense-amount");
-const description = document.getElementById("description");
-const category = document.getElementById("category");
-const expenseTable = document.getElementById("collection");
-const msg = document.querySelector(".msg");
+const [
+  myForm,
+  amount,
+  description,
+  category,
+  expense,
+  msg,
+  razorpayBtn,
+  razorpayPr,
+  boardbtn,
+  leaderBoard,
+  leaderBoard1,
+  boardSection,
+  reportBtn,
+  pagination,
+] = [
+  "my-form",
+  "expense-amount",
+  "description",
+  "category",
+  "collection",
+  ".msg",
+  "razorpay",
+  "razorpay-pr",
+  "board-btn",
+  "collection-board",
+  "leaderboard",
+  "leadership-br",
+  "report",
+  "pagination",
+].map((id) => document.getElementById(id));
+
 const token = localStorage.getItem("token");
-const razorpayBtn = document.getElementById("razorpay");
-const razorpayPr = document.getElementById("razorpay-pr");
-const boardbtn = document.getElementById("board-btn");
-const leaderBoard = document.getElementById("collection-board");
-const leaderBoard1 = document.getElementById("leaderboard");
-const boardSection = document.getElementById("leadership-br");
-const reportBtn = document.getElementById("report");
+const page = 1;
 
-const expensesPerPage = 10;
-let currentPage = 1;
-let totalExpenses = 0;
-
-window.addEventListener("DOMContentLoaded", async () => {
+async function fetchExpenses(page) {
   try {
-    const response = await axios.get("http://localhost:4000/user/expense", {
-      headers: { Authorization: token },
+    const response = await axios.get(
+      `http://localhost:4000/user/expense/page/?page=${page}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    response.data.expenses.forEach((user) => {
+      showOnScreen(user);
     });
-    totalExpenses = response.data.length;
-    showExpenses(currentPage, response.data);
-    showPaginationControls(response);
-    isPremium();
-    showTotalExpense();
+    showPagination(response);
   } catch (err) {
     console.error(err);
   }
+  showTotalExpense();
+  isPremium();
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+  fetchExpenses(page);
 });
 
-function showExpenses(page, expenses) {
-  expenseTable.innerHTML = "";
-  const startIndex = (page - 1) * expensesPerPage;
-  const endIndex = startIndex + expensesPerPage;
-  expenses.slice(startIndex, endIndex).forEach((expense) => {
-    showOnScreen(expense);
-  });
+async function getPage(page) {
+  fetchExpenses(page);
 }
-async function showTotalExpense() {
-  let sum = 0;
-  const title = document.getElementById("expense-title");
+
+async function showLeaderBoard(e) {
+  e.preventDefault();
   try {
-    const response = await axios.get("http://localhost:4000/user/expense", {
-      headers: { Authorization: token },
-    });
-    // console.log(response)
-    response.data.forEach((user) => {
-      sum += user.amount;
+    leaderBoard1.style.display = "block";
+    const users = await axios.get(
+      "http://localhost:4000/premium/leadershipboard",
+      { headers: { Authorization: token } }
+    );
+    users.data.forEach((user) => {
+      showBoard(user);
     });
   } catch (err) {
     console.log(err);
   }
 }
 
-function showOnScreen(expense) {
+boardbtn.addEventListener("click", showLeaderBoard);
+
+function showPagination(response) {
+  pagination.innerHTML = "";
+  const {
+    currentPage,
+    hasNextPage,
+    nextPage,
+    hasPreviousPage,
+    previousPage,
+    lastPage,
+  } = response.data.pageData;
+
+  if (hasPreviousPage) {
+    const btn2 = document.createElement("button");
+    // btn2.add.className = 'page-link'
+    btn2.innerHTML = previousPage;
+    btn2.addEventListener("click", () => getPage(previousPage));
+    pagination.appendChild(btn2);
+  }
+  const btn1 = document.createElement("button");
+  // btn1.add.className = 'page-link'
+  btn1.innerHTML = `<h3>${currentPage}</h3>`;
+  btn1.addEventListener("click", () => getPage(currentPage));
+  pagination.appendChild(btn1);
+
+  if (hasNextPage) {
+    const btn3 = document.createElement("button");
+    // btn3.add.className = 'page-link'
+    btn3.innerHTML = nextPage;
+    btn3.addEventListener("click", () => getPage(nextPage));
+    pagination.appendChild(btn3);
+  }
+}
+
+async function getPage(page) {
+  try {
+    page.data.expenses.forEach((user) => {
+      showOnScreen(user);
+    });
+    showPagination(page);
+  } catch (err) {
+    console.error(err);
+  }
+  showTotalExpense();
+  isPremium();
+}
+
+function report() {
+  window.location.href = "../Premium/daytodayExpense.html";
+}
+
+function showOnScreen(user) {
   const li = document.createElement("li");
   li.className = "list-group-item";
-  li.setAttribute("id", expense.id);
-  const textNode = `₹ ${expense.amount} - ${expense.description} - ${expense.category}`;
+  li.setAttribute("id", user.id);
+  const textNode = `₹ ${user.amount}-  ${user.description}-  ${user.category}`;
   li.appendChild(document.createTextNode(textNode));
-  expenseTable.appendChild(li);
+  expense.appendChild(li);
 
-  const deleteBtn = document.createElement("button");
+  var deleteBtn = document.createElement("button");
   deleteBtn.className = "btn btn-danger btn-sm float-end delete";
+  // Append text node
   deleteBtn.appendChild(document.createTextNode("DELETE"));
+  // Append delete btn to li
   li.appendChild(deleteBtn);
+  expense.appendChild(li);
 
-  const editBtn = document.createElement("button");
+  // Add Edit Button//
+  var editBtn = document.createElement("button");
   editBtn.className = "btn btn-secondary btn-sm float-end edit";
   editBtn.appendChild(document.createTextNode("EDIT"));
   li.appendChild(editBtn);
-}
-
-function showPaginationControls(response) {
-  const paginationControls = document.getElementById("pagination-controls");
-  const previousPageBtn = document.getElementById("previous-page");
-  const currentPageBtn = document.getElementById("current-page");
-  const nextPageBtn = document.getElementById("next-page");
-  const pageInfo = document.getElementById("page-info");
-
-  const totalPages = Math.ceil(totalExpenses / expensesPerPage);
-  pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-
-  if (currentPage === 1) {
-    previousPageBtn.classList.add("disabled");
-  } else {
-    previousPageBtn.classList.remove("disabled");
-    previousPageBtn.addEventListener("click", () => {
-      currentPage--;
-      showExpenses(currentPage, response.data);
-      totalExpenses = response.data.length; // update totalExpenses variable
-      pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-      previousPageBtn.classList.toggle("disabled", currentPage === 1);
-      nextPageBtn.classList.toggle("disabled", currentPage === totalPages);
-    });
-  }
-
-  if (currentPage === totalPages) {
-    nextPageBtn.classList.add("disabled");
-  } else {
-    nextPageBtn.classList.remove("disabled");
-    nextPageBtn.addEventListener("click", () => {
-      currentPage++;
-      showExpenses(currentPage, response.data);
-      pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-      previousPageBtn.classList.toggle("disabled", currentPage === 1);
-      nextPageBtn.classList.toggle("disabled", currentPage === totalPages);
-    });
-  }
-
-  currentPageBtn.innerHTML = currentPage;
-  paginationControls.style.display = "block";
+  expense.appendChild(li);
 }
 
 async function isPremium() {
@@ -129,26 +167,6 @@ async function isPremium() {
       boardSection.style.display = "block";
       reportBtn.style.display = "inline";
     }
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-boardbtn.addEventListener("click", showLeaderBoard);
-
-async function showLeaderBoard(e) {
-  e.preventDefault();
-  try {
-    leaderBoard1.style.display = "block";
-    const users = await axios.get(
-      "http://localhost:4000/premium/leadershipboard",
-      { headers: { Authorization: token } }
-    );
-    // console.log(users);
-    users.data.forEach((user) => {
-      // console.log(user)
-      showBoard(user);
-    });
   } catch (err) {
     console.log(err);
   }
@@ -218,7 +236,7 @@ async function onSubmit(e) {
   }
 }
 //Remove item
-expenseTable.addEventListener("click", removeItem);
+expense.addEventListener("click", removeItem);
 
 async function removeItem(e) {
   try {
@@ -238,7 +256,7 @@ async function removeItem(e) {
   }
 }
 //Edit item//
-expenseTable.addEventListener("click", editUser);
+expense.addEventListener("click", editUser);
 
 async function editUser(e) {
   try {
@@ -331,10 +349,4 @@ async function payment(e) {
       { headers: { Authorization: token } }
     );
   });
-}
-
-reportBtn.addEventListener("click", report);
-
-function report() {
-  window.location.href = "../Premium/daytodayExpense.html";
 }
