@@ -5,6 +5,12 @@ const expenseController = require("../controller/expense");
 const userAuthenticate = require("../middleware/auth");
 
 router.get(
+  "/user/expense/page/",
+  userAuthenticate.authenticate,
+  expenseController.getPageData
+);
+
+router.get(
   "/user/expense",
   userAuthenticate.authenticate,
   expenseController.getUserExpense
