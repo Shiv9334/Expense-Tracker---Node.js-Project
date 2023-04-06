@@ -51,7 +51,7 @@ web_modules/
 
 # TypeScript cache
 *.tsbuildinfo
-
+ 
 # Optional npm cache directory
 .npm
 
@@ -110,6 +110,7 @@ dist
 # Docusaurus cache and generated files
 .docusaurus
 
+nodemon.json
 # Serverless directories
 .serverless/
 
