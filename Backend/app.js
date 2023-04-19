@@ -21,15 +21,16 @@ const User = require("./models/user");
 const UserExpense = require("./models/expense");
 const Order = require("./models/order");
 const DownloadLink = require("./models/download");
-const ForgotPasswordRequest = require("./models/ForgotPasswordRequest");
+const ForgotPasswordRequest = require("./models/ForgotPasswordRequests");
 
-const accessLogStream = fs.createWriteStream(
+/*const accessLogStream = fs.createWriteStream(
   path.join(__dirname, "access.log"),
   { flags: "a" }
-);
+); */
 
-app.use(helmet());
-app.use(morgan("combined", { stream: accessLogStream }));
+/*app.use(helmet());
+//app.use(morgan("combined", { stream: accessLogStream }));
+app.use(morgan("combined"));*/
 
 app.use(bodyParser.json({ extended: false }));
 app.use(signUpRoute);
@@ -55,7 +56,7 @@ DownloadLink.belongsTo(User);
 console.log(process.env.NODE_ENV);
 
 sequelize
-  //.sync({ force: true })
+  // .sync({ alter: true })
   .sync()
   .then((result) => {
     console.log(result);

@@ -29,6 +29,7 @@ exports.postSignUpUser = async (req, res, next) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 function geenerateToken(id) {
   return jwt.sign({ userId: id }, "9755445544vcvfv8644");
 }

@@ -18,12 +18,18 @@ reportBtn.addEventListener("click", report);
 const rowsperpage = document.getElementById("rowsperpage");
 let selectedOption;
 
+const logout = document.getElementById("logout");
+
+logout.addEventListener("click", () => {
+  window.location.href = "../Login/login.html";
+  localStorage.removeItem("token");
+});
+
 rowsperpage.addEventListener("change", (e) => {
   selectedOption = e.target.options[e.target.selectedIndex];
   selectedOption.setAttribute("selected", "true");
   localStorage.setItem("rowsPerPage", rowsperpage.value);
   localStorage.setItem("selectedOption", selectedOption.value);
-  window.location.reload();
 });
 const itemsPerPage = localStorage.getItem("rowsPerPage");
 const page = 1;
@@ -94,11 +100,9 @@ async function getPage(page) {
       {
         headers: {
           Authorization: token,
-          itemsPerPage: itemsPerPage,
         },
       }
     );
-    removeFromScreen();
     //   console.log(response);
     response.data.expenses.forEach((user) => {
       showOnScreen(user);
@@ -114,8 +118,6 @@ async function getPage(page) {
 function report() {
   window.location.href = "../Premium/index.html";
 }
-
-const displayedExpenses = [];
 
 function showOnScreen(user) {
   const li = document.createElement("li");
@@ -139,15 +141,6 @@ function showOnScreen(user) {
   editBtn.appendChild(document.createTextNode("EDIT"));
   li.appendChild(editBtn);
   expense.appendChild(li);
-
-  displayedExpenses.push(li);
-}
-function removeFromScreen() {
-  displayedExpenses.forEach((li) => {
-    expense.removeChild(li);
-  });
-  // clear the displayedExpenses array
-  displayedExpenses.length = 0;
 }
 
 async function isPremium() {
@@ -244,7 +237,6 @@ async function onSubmit(e) {
       );
       showOnScreen(response.data);
       //clear fields
-      showTotalExpense();
       amount.value = "";
       description.value = "";
     } catch (err) {
